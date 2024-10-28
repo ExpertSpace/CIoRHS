@@ -5,40 +5,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    public static void main(String[] args) throws InterruptedException {
-        for (; ; ) {
-            Thread.sleep(1000);
-            try (ServerSocket serverSocket = new ServerSocket(8080)) {
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+            System.out.println("Сервер запущен на порту 8080");
+
+            while (true) {
+                // Ожидаем подключения клиента
                 Socket socket = serverSocket.accept();
+                System.out.println("Клиент подключен: " + socket.getRemoteSocketAddress());
 
-                BufferedReader bufferedReader =
-                        new BufferedReader(
-                                new InputStreamReader(socket.getInputStream()));
-
-                String request = bufferedReader.readLine();
-
-                if (request != null) {
-                    writeFile(request);
-
-                    System.out.println("\u001B[32m" + request);
-                }
-
-                serverSocket.close();
-                socket.close();
-            } catch (Exception ignored) {
-
+                // Создаем новый поток для обработки клиента
+                new Thread(new ClientHandler(socket)).start();
             }
-        }
-    }
-
-    private static void writeFile(String data) {
-        try {
-            FileWriter fileWriter = new FileWriter("file.csv", true);
-            fileWriter.write(data + "\n");
-            fileWriter.flush();
-            fileWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
