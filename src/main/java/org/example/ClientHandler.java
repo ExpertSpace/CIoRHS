@@ -18,10 +18,8 @@ class ClientHandler implements Runnable {
             String[] request = bufferedReader.readLine().split(",");
 
             ComputerLocationRecorder recorder = new ComputerLocationRecorder();
-            if (request != null) {
-                System.out.println(Integer.parseInt(request[0]) + " " + request[1] + " " + request[2]);
-                recorder.recordComputerLocation(Integer.parseInt(request[0]), Integer.parseInt(request[1]), request[2]);
-            }
+            System.out.println(Integer.parseInt(request[0]) + " " + request[1] + " " + request[2]);
+            recorder.recordComputerLocation(Integer.parseInt(request[0]), Integer.parseInt(request[1]), request[2]);
             recorder.close();
         } catch (IOException e) {
             e.printStackTrace();

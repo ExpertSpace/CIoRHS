@@ -20,7 +20,8 @@ public class ComputerLocationRecorder {
     }
 
     private void createTableIfNotExists() {
-        String query = "CREATE TABLE IF NOT EXISTS computer_locations (" +
+        String query = "CREATE TABLE IF NOT EXISTS COMPUTER_LOCATIONS (" +
+                "id SERIAL PRIMARY KEY, " +
                 "date TEXT, " +
                 "time TEXT, " +
                 "cabinet_number INTEGER, " +
@@ -34,7 +35,7 @@ public class ComputerLocationRecorder {
     }
 
     public synchronized void recordComputerLocation(int cabinetNumber, int computerNumber, String analysisResult) {
-        String query = "INSERT INTO computer_locations (date, time, cabinet_number, computer_number, analysis_result) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO COMPUTER_LOCATIONS (date, time, cabinet_number, computer_number, analysis_result) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             System.out.println("=================================LOG: БД открыта для записи=================================");
             statement.setString(1, LocalDatetimeServer.getDateOnLocalHost());
